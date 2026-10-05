@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
+import { motion, PanInfo } from 'framer-motion';
 import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -67,6 +67,16 @@ const FAN_CARDS: FanCard[] = [
 
 export function FanDeckShowcase() {
   const [activeIndex, setActiveIndex] = useState(2); // Center card (ZORO BACKPACK)
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const activeCard = FAN_CARDS[activeIndex] || FAN_CARDS[2]!;
 
@@ -79,9 +89,9 @@ export function FanDeckShowcase() {
   };
 
   const handleDragEnd = (e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    if (info.offset.x < -40) {
+    if (info.offset.x < -35) {
       handleNext();
-    } else if (info.offset.x > 40) {
+    } else if (info.offset.x > 35) {
       handlePrev();
     }
   };
@@ -89,41 +99,41 @@ export function FanDeckShowcase() {
   return (
     <section
       aria-label="3D Featured Showcase"
-      className="w-full py-10 sm:py-20 bg-white overflow-hidden flex flex-col items-center justify-center border-b border-zinc-200 select-none relative"
+      className="w-full py-8 sm:py-16 bg-white overflow-hidden flex flex-col items-center justify-center border-b border-zinc-200 select-none relative"
     >
       {/* Background Subtle Monogram Watermark */}
       <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
-        <span className="font-mono font-black text-[18vw] text-black tracking-widest uppercase">
+        <span className="font-mono font-black text-[22vw] text-black tracking-widest uppercase">
           ELLANE
         </span>
       </div>
 
       <div className="relative w-full max-w-5xl mx-auto px-4 flex flex-col items-center">
-        {/* 3D Fan Deck Container */}
-        <div className="relative w-full h-[380px] sm:h-[560px] flex items-center justify-center perspective-[1200px] touch-pan-y">
+        {/* 3D Fan Deck Stage */}
+        <div className="relative w-full h-[330px] sm:h-[480px] lg:h-[540px] flex items-center justify-center perspective-[1000px] touch-pan-y">
           {FAN_CARDS.map((card, index) => {
             const offset = index - activeIndex;
             const isCenter = offset === 0;
 
             // Responsive 3D fan offset calculation
-            const xOffset = offset * 50;
-            const rotateZ = offset * 4;
-            const rotateY = offset * -12;
-            const scale = isCenter ? 1.06 : Math.max(0.8, 1 - Math.abs(offset) * 0.08);
+            const xOffset = isMobile ? offset * 38 : offset * 85;
+            const rotateZ = isMobile ? offset * 3 : offset * 4;
+            const rotateY = isMobile ? offset * -8 : offset * -12;
+            const scale = isCenter ? 1.05 : isMobile ? Math.max(0.78, 0.95 - Math.abs(offset) * 0.08) : 1 - Math.abs(offset) * 0.08;
             const zIndex = 20 - Math.abs(offset) * 3;
-            const opacity = Math.abs(offset) > 2 ? 0.2 : 1 - Math.abs(offset) * 0.15;
+            const opacity = Math.abs(offset) > 2 ? 0.15 : 1 - Math.abs(offset) * 0.18;
 
             return (
               <motion.div
                 key={card.id}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.2}
+                dragElastic={0.15}
                 onDragEnd={handleDragEnd}
                 onClick={() => setActiveIndex(index)}
                 animate={{
                   x: xOffset,
-                  y: isCenter ? -12 : Math.abs(offset) * 10,
+                  y: isCenter ? -10 : Math.abs(offset) * 8,
                   rotateZ,
                   rotateY,
                   scale,
@@ -132,14 +142,14 @@ export function FanDeckShowcase() {
                 }}
                 transition={{
                   type: 'spring',
-                  stiffness: 190,
+                  stiffness: 220,
                   damping: 24,
                 }}
                 className={cn(
-                  'absolute w-[180px] sm:w-[280px] lg:w-[320px] aspect-[9/16] rounded-2xl overflow-hidden cursor-pointer shadow-2xl border transition-colors',
+                  'absolute w-[165px] sm:w-[260px] lg:w-[300px] aspect-[9/16] rounded-xl sm:rounded-2xl overflow-hidden cursor-pointer shadow-xl border transition-colors will-change-transform',
                   isCenter
-                    ? 'border-black ring-2 ring-black/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'
-                    : 'border-zinc-300 hover:border-zinc-500'
+                    ? 'border-black ring-2 ring-black/10 shadow-[0_15px_40px_rgba(0,0,0,0.28)]'
+                    : 'border-zinc-300 hover:border-zinc-400'
                 )}
                 style={{ transformStyle: 'preserve-3d' }}
               >
@@ -148,52 +158,70 @@ export function FanDeckShowcase() {
                   src={card.image}
                   alt={card.title}
                   fill
-                  sizes="(max-width: 640px) 200px, 340px"
+                  sizes="(max-width: 640px) 180px, 320px"
                   className="object-cover pointer-events-none"
+                  priority={isCenter}
                 />
 
-                {/* Card Top Title & Kanji Header */}
-                <div className="absolute top-0 inset-x-0 p-3 sm:p-4 pt-4 bg-gradient-to-b from-black/90 via-black/40 to-transparent text-center space-y-0.5">
-                  <span className="font-mono text-[8px] sm:text-[10px] font-bold text-white tracking-[0.2em] uppercase block line-clamp-1">
+                {/* Card Top Title & Subtitle */}
+                <div className="absolute top-0 inset-x-0 p-2.5 sm:p-4 pt-3 sm:pt-4 bg-gradient-to-b from-black/90 via-black/40 to-transparent text-center space-y-0.5">
+                  <span className="font-mono text-[8px] sm:text-[10px] font-bold text-white tracking-[0.18em] uppercase block truncate px-1">
                     {card.title}
                   </span>
-                  <span className="text-[9px] sm:text-[10px] text-zinc-400 font-mono tracking-wider block">
+                  <span className="text-[8px] sm:text-[9px] text-zinc-300 font-mono tracking-wider block">
                     {card.subtitle}
                   </span>
                 </div>
 
-                {/* Card Bottom Gradient Shadow */}
-                <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/90 to-transparent" />
+                {/* Card Bottom Shadow Gradient */}
+                <div className="absolute inset-x-0 bottom-0 h-16 sm:h-20 bg-gradient-to-t from-black/80 to-transparent" />
               </motion.div>
             );
           })}
         </div>
 
-        {/* Bottom Category Selector & Action Buttons */}
-        <div className="flex items-center gap-3 sm:gap-4 mt-6 sm:mt-8 z-30">
+        {/* Tactile Indicator Dots for Mobile */}
+        <div className="flex items-center gap-1.5 mt-3 sm:mt-4 z-20">
+          {FAN_CARDS.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveIndex(idx)}
+              className={cn(
+                'h-1.5 rounded-full transition-all duration-300',
+                idx === activeIndex ? 'w-6 bg-black' : 'w-1.5 bg-zinc-300 hover:bg-zinc-400'
+              )}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Bottom Category Selector & Action Button */}
+        <div className="flex items-center justify-center gap-3 sm:gap-4 mt-4 sm:mt-6 z-30 w-full max-w-xs">
           <button
             onClick={handlePrev}
-            className="w-8 h-8 rounded-full border border-zinc-300 bg-white text-black flex items-center justify-center hover:border-black active:scale-90 transition-all sm:hidden"
+            className="w-8 h-8 rounded-full border border-zinc-300 bg-white text-black flex items-center justify-center hover:border-black active:scale-90 transition-all sm:hidden shrink-0 shadow-sm"
             aria-label="Previous card"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
 
-          <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-black">
-            {activeCard.category}
-          </span>
+          <div className="flex items-center gap-3 flex-1 justify-center">
+            <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-black truncate">
+              {activeCard.category}
+            </span>
 
-          <Link
-            href={activeCard.link}
-            className="px-5 py-2 sm:px-6 sm:py-2.5 rounded-full border border-black text-black font-mono text-[11px] sm:text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-200 flex items-center gap-1.5 shadow-sm active:scale-95"
-          >
-            <span>SHOP NOW</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
-          </Link>
+            <Link
+              href={activeCard.link}
+              className="px-4 py-1.5 sm:px-6 sm:py-2.5 rounded-full border border-black text-black font-mono text-[10px] sm:text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all duration-200 flex items-center gap-1 shadow-sm active:scale-95 shrink-0"
+            >
+              <span>SHOP NOW</span>
+              <ArrowUpRight className="w-3 h-3" />
+            </Link>
+          </div>
 
           <button
             onClick={handleNext}
-            className="w-8 h-8 rounded-full border border-zinc-300 bg-white text-black flex items-center justify-center hover:border-black active:scale-90 transition-all sm:hidden"
+            className="w-8 h-8 rounded-full border border-zinc-300 bg-white text-black flex items-center justify-center hover:border-black active:scale-90 transition-all sm:hidden shrink-0 shadow-sm"
             aria-label="Next card"
           >
             <ChevronRight className="w-4 h-4" />

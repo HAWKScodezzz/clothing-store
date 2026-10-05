@@ -65,9 +65,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
   const isOutOfStock = product.sizes.every((s) => !isSizeInStock(product, s));
 
   return (
-    <div className="group relative flex flex-col bg-transparent select-none">
+    <div className="group relative flex flex-col bg-transparent select-none transition-transform active:scale-[0.98]">
       {/* 4:5 Media Container with Zenin aesthetics */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-md bg-zinc-100 border border-zinc-200 group-hover:border-zinc-400 transition-all duration-300">
+      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg sm:rounded-xl bg-zinc-100 border border-zinc-200 group-hover:border-zinc-400 transition-all duration-300">
         <Link href={`/products/${product.slug}`} className="block w-full h-full relative">
           {/* Primary Photo */}
           <Image
@@ -93,19 +93,19 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             />
           )}
 
-          {/* Dark Vignette Overlay */}
+          {/* Subtle Dark Vignette Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
         </Link>
 
-        {/* SAVE xx% Pill Badge (Bottom-Left as seen in Zenin Screenshot 3) */}
-        <div className="absolute bottom-3 left-3 z-10 pointer-events-none">
+        {/* SAVE xx% Pill Badge (Bottom-Left) */}
+        <div className="absolute bottom-2.5 left-2.5 sm:bottom-3 sm:left-3 z-10 pointer-events-none">
           {discountPercent > 0 && !isOutOfStock && (
-            <span className="px-2.5 py-1 rounded-full bg-[#8b0000] text-white font-mono text-[10px] font-black uppercase tracking-wider shadow-md">
+            <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-[#8b0000] text-white font-mono text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md">
               SAVE {discountPercent}%
             </span>
           )}
           {isOutOfStock && (
-            <span className="px-2.5 py-1 rounded-full bg-zinc-800 text-zinc-300 font-mono text-[10px] font-bold uppercase tracking-wider border border-zinc-700">
+            <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-zinc-800 text-zinc-300 font-mono text-[9px] sm:text-[10px] font-bold uppercase tracking-wider border border-zinc-700">
               SOLD OUT
             </span>
           )}
@@ -116,13 +116,13 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           onClick={handleWishlistToggle}
           aria-label={isFavorited ? 'Remove from wishlist' : 'Add to wishlist'}
           className={cn(
-            'absolute top-3 right-3 z-20 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-600 shadow-md',
+            'absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-20 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none shadow-md active:scale-90',
             isFavorited
-              ? 'bg-red-600 text-white scale-110'
-              : 'bg-black/60 text-white/90 hover:bg-black hover:text-white backdrop-blur-sm'
+              ? 'bg-red-600 text-white scale-105'
+              : 'bg-black/60 text-white hover:bg-black backdrop-blur-sm'
           )}
         >
-          <Heart className={cn('w-4 h-4 transition-transform', isFavorited && 'fill-current scale-110')} />
+          <Heart className={cn('w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform', isFavorited && 'fill-current')} />
         </button>
 
         {/* Desktop Quick Add Size Overlay on Hover */}
@@ -158,26 +158,26 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
         {!isOutOfStock && (
           <button
             onClick={handleMobileQuickAdd}
-            className="md:hidden absolute bottom-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-white text-black flex items-center justify-center shadow-xl active:scale-95 font-bold border border-zinc-300"
+            className="md:hidden absolute bottom-2.5 right-2.5 z-20 w-7 h-7 rounded-full bg-white text-black flex items-center justify-center shadow-lg active:scale-90 font-bold border border-zinc-300"
             aria-label={`Quick add ${product.title}`}
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
           </button>
         )}
       </div>
 
-      {/* Product Info Block (Exact Zenin Screenshot 3 Match) */}
-      <div className="pt-2.5 pb-1 flex flex-col gap-1">
+      {/* Product Info Block */}
+      <div className="pt-2 pb-1 flex flex-col gap-0.5 sm:gap-1">
         <Link href={`/products/${product.slug}`} className="block">
-          <h3 className="font-mono text-xs font-medium uppercase tracking-wider text-black line-clamp-1 hover:text-zinc-600 transition-colors">
+          <h3 className="font-mono text-[11px] sm:text-xs font-medium uppercase tracking-wider text-black truncate hover:text-zinc-600 transition-colors">
             {product.title}
           </h3>
         </Link>
 
-        {/* Price Row: Slashed MRP first or second according to Zenin */}
-        <div className="flex items-center gap-2 text-xs font-mono">
+        {/* Price Row */}
+        <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono">
           {product.mrp > product.price && (
-            <span className="text-zinc-500 line-through text-[11px]">
+            <span className="text-zinc-500 line-through text-[10px] sm:text-[11px]">
               {formatPrice(product.mrp)}
             </span>
           )}
