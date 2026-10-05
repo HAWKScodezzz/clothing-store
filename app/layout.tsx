@@ -6,6 +6,7 @@ import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { MobileMenu } from '@/components/layout/MobileMenu';
+import { MobileBottomNav } from '@/components/layout/MobileBottomNav';
 import { CartDrawer } from '@/components/store/CartDrawer';
 import { SearchDialog } from '@/components/store/SearchDialog';
 import { QuickAddModal } from '@/components/store/QuickAdd';
@@ -109,9 +110,10 @@ export default function RootLayout({
         <Header />
         <MobileMenu />
 
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pb-16 md:pb-0">{children}</main>
 
         <Footer />
+        <MobileBottomNav />
 
         {/* Global Modals & Notifications */}
         <CartDrawer />
