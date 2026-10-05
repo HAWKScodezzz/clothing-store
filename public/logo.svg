@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <circle cx="150" cy="150" r="142" fill="none" stroke="currentColor" stroke-width="12"/>
+  <!-- Geometric Monogram E from Screenshot 5 -->
+  <g transform="translate(150, 120)">
+    <!-- Top Chamfer Outer Bracket -->
+    <path d="M -55 -45 L 35 -45 L 55 -25 L 55 10 L 40 25 L 40 -15 L 25 -30 L -40 -30 L -40 25 L 20 25 L 20 40 L -55 40 Z" fill="currentColor"/>
+    <!-- Bottom Chamfer Outer Bracket -->
+    <path d="M 55 45 L -35 45 L -55 25 L -55 -10 L -40 -25 L -40 15 L -25 30 L 40 30 L 40 -25 L -20 -25 L -20 -40 L 55 -40 Z" fill="currentColor"/>
+    <!-- Center Bar E -->
+    <polygon points="-25,-7 30,-7 30,7 -25,7" fill="currentColor"/>
+  </g>
+  <!-- ELLANE Bold Wordmark -->
+  <text x="150" y="235" text-anchor="middle" fill="currentColor" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="34" font-weight="900" letter-spacing="4">ELLANE</text>
+</svg>

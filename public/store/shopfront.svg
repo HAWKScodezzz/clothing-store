@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700">
+  <defs>
+    <linearGradient id="shopBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181d"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="700" fill="url(#shopBg)"/>
+  
+  <!-- Shop Signboard -->
+  <rect x="150" y="120" width="700" height="160" rx="4" fill="#09090b" stroke="#e11d48" stroke-width="2"/>
+  <text x="500" y="190" text-anchor="middle" fill="#ffffff" font-family="'Space Grotesk', sans-serif" font-size="44" font-weight="900" letter-spacing="6">ELLANE</text>
+  <text x="500" y="240" text-anchor="middle" fill="#e11d48" font-family="'Noto Sans Kannada', sans-serif" font-size="28" font-weight="bold">ಎಲ್ಲೇನ್ ಸ್ಟೋರ್</text>
+  
+  <!-- Doorway / Window display simulation -->
+  <rect x="250" y="320" width="500" height="340" fill="#121216" stroke="#27272a" stroke-width="2"/>
+  <line x1="500" y1="320" x2="500" y2="660" stroke="#27272a" stroke-width="2"/>
+  <circle cx="480" cy="490" r="6" fill="#e11d48"/>
+  <circle cx="520" cy="490" r="6" fill="#e11d48"/>
+
+  <text x="500" y="440" text-anchor="middle" fill="#a1a1aa" font-family="'JetBrains Mono', monospace" font-size="14" letter-spacing="3">PHYSICAL STORE · BENGALURU</text>
+  <text x="500" y="480" text-anchor="middle" fill="#71717a" font-family="'JetBrains Mono', monospace" font-size="12" letter-spacing="2">OPEN DAILY: 11:00 AM – 9:30 PM</text>
+</svg>
